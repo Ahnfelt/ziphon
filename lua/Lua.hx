@@ -1,9 +1,9 @@
 import Expression;
 import neko.Lib;
 
-class Translator {
+class Lua {
     public static function translateToLua(expression: Expression): String {
-        var translator = new Translator();
+        var translator = new Lua();
         var body = translator.translate(expression);
         var prelude = "local function S_string(s) local S_self = nil; S_self = {S_value = s, F_toString = function() return S_self end}; return S_self end; ";
         prelude += "local function S_float(s) return {S_value = s, F_toString = function() return S_string(\"\"..s) end} end; ";
