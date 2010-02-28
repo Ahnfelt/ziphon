@@ -1,24 +1,5 @@
+import Expression;
 import neko.Lib;
-
-enum Pattern {
-    PWildcard;
-    PVariable(name: String);
-    //PObject(fields: Array<{name: String, pattern: Pattern}>);
-}
-
-enum Expression {
-    EImport(module: Array<String>, name: Null<String>, names: Array<{target: String, source: String}>, body: Expression);
-    ELet(name: String, export: Bool, value: Expression, body: Expression);
-    ERecursive(definitions: Array<{name: String, export: Bool, value: Expression}>, body: Expression);
-    EVariable(name: String);
-    ESequence(left: Expression, right: Expression);
-    EAssign(name: String, value: Expression);
-    EApply(target: Expression, argument: Expression);
-    EField(target: Expression, name: String);
-    EObject(parent: Null<Expression>, lambda: Null<Array<{patterns: Array<Pattern>, body: Expression}>>, fields: Hash<Expression>);
-    EString(value: String);
-    EFloat(value: Float);
-}
 
 class Translator {
     public static function translateToLua(expression: Expression): String {
@@ -103,16 +84,27 @@ class Translator {
                         }
                     }
                     if(!done) {
-                        throw "Not implemented"; // TODO
-                        /*
-                        result += "__call = function(S_parameter)\n";
-                        for(choice in lambda) {
-                            result += "if " + translateMatcher(choice.pattern, "S_parameter") + " then ";
-                            result += translateExtractor(choice.pattern, "S_parameter") + "\n";
-                            result += "return " + translate(choice.body) + ";\nelse";
-                            result += " error(\"None of the patterns matched.\") end end,\n";
+                        result += "__call = ";
+                        for(i in 0...lambda[0].patterns.length) {
+                            result += "function(S_" + i + ") ";
                         }
-                        */
+                        for(choice in lambda) {
+                            var conditions = [];
+                            var extractors = [];
+                            for(i in 0...lambda[0].patterns.length) {
+                                var translated = translatePattern("S_" + i, choice.patterns[0]);
+                                conditions.push(translated.condition);
+                                extractors.push(translated.extractor);
+                            }
+                            result += "if " + conditions.join(" and ") + " then ";
+                            result += extractors.join("") + "\n";
+                            result += "return " + translate(choice.body) + ";\nelse";
+                            result += " error(\"None of the patterns matched.\") end";
+                        }
+                        for(i in 0...lambda[0].patterns.length) {
+                            result += " end";
+                        }
+                        result += ",\n";
                     }
                 }
                 if(parent != null) {
@@ -130,24 +122,57 @@ class Translator {
         }
     }
     
-    private function translateMatcher(pattern: Pattern, getter: String) {
+    private function translatePattern(getter: String, pattern: Pattern): {condition: String, extractor: String} {
         switch(pattern) {
             case PWildcard:
-                return "true";
+                return {
+                    condition: "true",
+                    extractor: "",
+                };
             case PVariable(name):
-                return "true";
+                return {
+                    condition: "true",
+                    extractor: "local V_" + name + " = " + getter + "; ",
+                };
+            case PString(value):
+                return {
+                    condition: getter + " == \"" + escape(value) + "\"",
+                    extractor: "",
+                };
+            case PFloat(value):
+                return {
+                    condition: getter + " == " + value,
+                    extractor: "",
+                };
+            case PObject(fields):
+                var conditions = [];
+                var extractors = [];
+                for(field in fields) {
+                    var result = translatePattern(getter + "[\"F_get" + escape(field.name) + "\"]()", field.pattern);
+                    conditions.push(result.condition);
+                    extractors.push(result.extractor);
+                }
+                return {
+                    condition: conditions.join(" and "),
+                    extractor: extractors.join(""),
+                };
+            case PVariant(tag, patterns):
+                var conditions = [];
+                var extractors = [];
+                var i = 0;
+                for(pattern in patterns) {
+                    var result = translatePattern(getter + ".S_" + i, pattern);
+                    conditions.push(result.condition);
+                    extractors.push(result.extractor);
+                    i += 1;
+                }
+                return {
+                    condition: getter + ".S_tag == \"" + tag + "\" and " + conditions.join(" and "),
+                    extractor: extractors.join(""),
+                };
         }
     }
-
-    private function translateExtractor(pattern: Pattern, getter: String) {
-        switch(pattern) {
-            case PWildcard:
-                return "";
-            case PVariable(name):
-                return "local V_" + name + " = " + getter + "; ";
-        }
-    }
-
+    
     private static function moduleName(parts: Array<String>): String {
         var result = "M";
         for(part in parts) {
@@ -180,9 +205,15 @@ class Translator {
             {name: "end", export: true, value: EString("ending")},
             ], EString(""));
         Lib.println(translateToLua(e2));*/
-        var e3 = EImport(["standard"], "standard", null,
+        /*var e3 = EImport(["standard"], "standard", null,
             EApply(EField(EVariable("standard"), "print"), EString("Hello, World!")));
-        Lib.println(translateToLua(e3));
+        Lib.println(translateToLua(e3));*/
+        var lambda2 = [{
+            patterns: [PObject([{name: "P", pattern: PVariable("p")}, {name: "Q", pattern: PVariable("q")}])],
+            body: EVariable("q")
+        }];
+        var e4 = ELet("f", false, EObject(null, lambda2, new Hash()), EVariable("f"));
+        Lib.println(translateToLua(e4));
     }
 }
 
