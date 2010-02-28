@@ -85,14 +85,16 @@ class Lua {
                     }
                     if(!done) {
                         result += "__call = ";
-                        for(i in 0...lambda[0].patterns.length) {
+                        var patterns = lambda[0].patterns.length;
+                        for(i in 0...patterns) {
+                            if(i != 0) result += "return ";
                             result += "function(S_" + i + ") ";
                         }
                         for(choice in lambda) {
                             var conditions = [];
                             var extractors = [];
-                            for(i in 0...lambda[0].patterns.length) {
-                                var translated = translatePattern("S_" + i, choice.patterns[0]);
+                            for(i in 0...patterns) {
+                                var translated = translatePattern("S_" + i, choice.patterns[i]);
                                 conditions.push(translated.condition);
                                 extractors.push(translated.extractor);
                             }
@@ -101,7 +103,7 @@ class Lua {
                             result += "return " + translate(choice.body) + ";\nelse";
                             result += " error(\"None of the patterns matched.\") end";
                         }
-                        for(i in 0...lambda[0].patterns.length) {
+                        for(i in 0...patterns) {
                             result += " end";
                         }
                         result += ",\n";
@@ -209,21 +211,11 @@ class Lua {
             EApply(EField(EVariable("standard"), "print"), EString("Hello, World!")));
         Lib.println(translateToLua(e3));*/
         var lambda2 = [{
-            patterns: [PObject([{name: "P", pattern: PVariable("p")}, {name: "Q", pattern: PVariable("q")}])],
+            patterns: [PObject([{name: "P", pattern: PVariable("p")}, {name: "Q", pattern: PVariable("q")}]), PString("foo")],
             body: EVariable("q")
         }];
         var e4 = ELet("f", false, EObject(null, lambda2, new Hash()), EVariable("f"));
         Lib.println(translateToLua(e4));
     }
 }
-
-/*
-# Ugly example
-@graphics.opengl gl (start := begin, stop := end)
-o ::= (:{|x| x},
-    a: "blah"
-)
-o("baz")
-o
-*/
 
