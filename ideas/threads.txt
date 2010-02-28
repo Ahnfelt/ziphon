@@ -1,0 +1,32 @@
+# Read lock on same or child within readlock: OK
+# ReadWrite lock on same or child within readwritelock: OK
+# ReadWrite lock on child within readLock: OK
+# Anything else: Exception
+# Access is given on a first-come first-served basis.
+# Reads can be performed concurrently.
+
+# Prevents deadlocks since there is only one order in which to obtain locks
+# Ensures that you release the locks you take.
+# Makes it possible to nest locks, making it possible to reuse code.
+# Efficient, since multiple reads can be performed concurrently.
+# The focus is on data, not on code.
+
+data := shared(x: 0)
+data2 := sharedChild(data, (y: 0))
+
+data.read {|d|
+    print(d.x())
+}
+
+data.readWrite {|d|
+    d.x += 1
+}
+
+data.read {|d|
+    data2.readWrite {|d2|
+        d2.y += d.x()
+    }
+}
+
+# Should also have barriers and possibly notifications.
+

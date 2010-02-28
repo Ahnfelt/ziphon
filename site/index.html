@@ -1,0 +1,257 @@
+<html>
+<title>Ziphon</title>
+<style>
+body {
+    background:url('tile.png');
+    margin:0;
+    padding-bottom:50px;
+}
+#top {
+    background:#005080;
+    border-bottom:2px solid #006bb7;
+    height:32px;
+}
+#menu a, #branding a {
+    color:#ffffff;
+    text-decoration:none;
+}
+#menu a:hover, #branding a:hover {
+    color:#a0cbff;
+}
+#branding {
+    position:absolute;
+    left:0;
+    top:0;
+    height:32px;
+    vertical-align:middle;
+}
+#logo {
+    padding-left:20px;
+    font-weight:bold;
+    font-family:courier;
+    font-size:25px;
+    color:#ffffff;
+}
+#phrase {
+    padding-left:30px;
+    font-family:'monospace', courier;
+    font-size:15px;
+    color:#ffffff;
+}
+#menu {
+    position:absolute;
+    right:0;
+    top:0;
+    height:32px;
+    vertical-align:middle;
+}
+.item {
+    padding-right:20px;
+    font-weight:bold;
+    font-family:'trebuchet ms', sans-serif;
+    font-size:16px;
+    color:#ffffff;
+    vertical-align:bottom;
+}
+#search {
+    margin:0;
+    padding:0;
+    display:inline;
+}
+#search input {
+    border:1px solid #00a0e0;
+    background:#0080c0;
+    font-family:'monospace', courier;
+    font-size:12px;
+    width:200px;
+    margin-top:6px;
+    margin-right:5px;
+    height:20px;
+    color:#ffffff;
+}
+#search input:hover {
+    background:#008aca;
+    border:1px solid #c0e0e0;
+}
+#search input:focus {
+    background:#0090d0;
+    border:1px solid #c0e0e0;
+    outline:none;
+}
+#content {
+    margin-left:10%;
+    margin-right:10%;
+    color:#ffffff;
+    font-family:'DejaVu Sans',sans-serif;
+}
+#content a {
+    color:#a0cbff;
+    text-decoration:none;
+}
+#content a:hover {
+    color:#ffffff;
+}
+#content h1 {
+    margin:0;
+    font-size:20px;
+}
+#content h2 {
+    margin:0;
+    margin-top:25px;
+    font-size:18px;
+}
+#content p {
+    margin:0;
+    margin-top:20px;
+    margin-right:20%;
+}
+#content pre {
+    background:#0060a7;
+    border:2px solid #006bb7;
+    font-family:'monospace', courier;
+    font-size:15px;
+    padding:10px;
+    margin-left:20px;
+    margin-right:50px;
+}
+.article {
+    background:#005080;
+    border:2px solid #006bb7;
+    margin-top:30px;
+    padding:20px;
+    padding-left:20px;
+    padding-right:20px;
+}
+.info {
+    float:right;
+    clear:right;
+    background:url('tile.png');
+    border:2px solid #006bb7;
+    margin-left:15px;
+    margin-bottom:15px;
+    padding:10px;
+}
+</style>
+<body>
+
+<div id="top">
+</div>
+<div id="branding">
+<span id="logo" title="Visit the front page"><a href="http://ziphon.net">Ziphon</a></span><!--
+--><span id="phrase">under development</span>
+</div>
+<div id="menu">
+<span class="item" title="Download Ziphon for your system"><a href="http://downloads.ziphon.net">Downloads</a></span><!--
+--><span class="item" title="Get to know Ziphon and its libraries"><a href="http://documentation.ziphon.net">Documentation</a></span><!--
+--><span class="item" title="Participate in the discussion"><a href="http://community.ziphon.net">Community</a></span><!--
+--><form id="search"><!--
+--><input id="query" name="query" type="text" spellcheck="false" alt="search" title="Example: To search for a function that takes a String and returns an Int, type: {|String| Int}"><!--
+--></form>
+</div>
+<script type="text/javascript"><!--
+document.getElementById('query').focus();
+//--></script>
+
+<div id="content">
+<div class="article">
+<div class="info">
+<h1>Downloads</h1>
+<ul>
+<li><a href="http://downloads.ziphon.net/ziphon-windows-latest.exe">Ziphon for Windows</a></li>
+<li><a href="http://downloads.ziphon.net/ziphon-macosx-latest.pkg">Ziphon for Mac OS X</a></li>
+<li><a href="http://downloads.ziphon.net/ziphon-ubuntu-latest.deb">Ziphon for Ubuntu</a></li>
+<li><a href="http://downloads.ziphon.net/ziphon-latest.zip">Ziphon source code</a></li>
+</ul>
+<a href="http://downloads.ziphon.net/">Other versions</a>
+</div>
+<h1>What is Ziphon?</h1>
+<p>
+Ziphon is a high level programming language that focuses on fine grained code reuse.
+It is implicitely statically typed.
+Our philosophy is that the key to productivity is to enable the painless creation 
+and use of small libraries.
+</p>
+<h2>Example code</h2>
+<p>
+All of these are runnable code. <a href="http://interactive.ziphon.net/">Go ahead!</a>
+</p>
+<pre>
+# The classic example
+print('Hello, World!')
+</pre>
+<p>
+That was straightforward. Let's do something more involved:
+</p>
+<pre>
+# Printing each line of a file that starts with ">"
+@io (file)
+file('test.txt').lines().each {|line|
+    line.startsWith('>').then {
+        print(line)
+    }
+}
+</pre>
+<p>
+If this is the first time you see Ziphon, you gotta be asking what that is about.
+The <code>@io (file)</code> says to import <code>file</code> from the <code>io</code> module. 
+Then we construct a file, get its lines, and iterate over them. Ziphon has no keywords. 
+Instead, <code>each</code> is a method that takes a function and calls it on each element.
+Function literals are written like this: <code>{|argument1, argument2| ... }</code>; this is
+a function that takes two arguments and does something (the ...) with them. The function we
+provide to <code>each</code> takes just one argument though. Inside the function body,
+we use Ziphon's equivalent of an if-statement. <code>line.startsWith('>')</code> might return
+either True or False. We use the <code>then</code> method, which calls the function we 
+provide if we got True back. This time, we need no arguments, so we simply leave the vertical 
+bars out of the function literal. The body of the function simply prints out the line to the 
+screen. Phew - what a mouthful! Make sure you understand these three examples though, because 
+when you do, you're ready to sky dive into the code! If that's what you prefer, anyway.
+</p>
+<pre>
+# Summing a list of squared even integers
+list := [i * i | i: [1, 2, 3, 4, 5], i % 2 == 0]
+print(sum(list))
+</pre>
+<p>
+Wierd, isn't it? That blob in [...] on line 2 is a list comprehension. It is not at all complicated though:
+it multiplies <code>i</code> by itself to square it; it does so for every <code>i</code> in the 
+list of integers from 1 to 5; and it filters out all those <code>i</code> that are divisible by
+two (ie. those which are even). To the left of the comprehension we find <code>list :=</code>,
+which is a definition: we define <code>list</code> to be the result of the list comprehension.
+The last line simply calls <code>sum</code> on the list and prints out the result.
+</p>
+<p>
+You can <a href="http://interactive.ziphon.net/">try Ziphon in your browser</a>, 
+or you can go ahead and install it locally.
+If you'd like to read more, head on over to the 
+<a href="http://documentation.ziphon.net/">documentation section</a>.
+</p>
+</div>
+
+<div class="article">
+<div class="info">
+<h1>Recent updates</h1>
+<ul>
+<li><a href="http://repository.ziphon.net/Gtk/">Gtk (2.3.0)</a></li>
+<li><a href="http://repository.ziphon.net/Hili/">Hili (0.4.1)</a></li>
+<li><a href="http://repository.ziphon.net/OpenAL/">OpenAL (1.0.5)</a></li>
+<li><a href="http://repository.ziphon.net/SQLite/">SQLite (1.1.0)</a></li>
+<li><a href="http://repository.ziphon.net/Socket/">Socket (0.0.1)</a></li>
+</ul>
+<a href="http://repository.ziphon.net/">More libraries</a>
+</div>
+<h1>News</h1>
+<p>
+Duis vel urna et lorem pellentesque suscipit. Suspendisse nec neque lacus, vitae dapibus diam. Donec vitae nibh id metus pretium vulputate nec eu nibh. Praesent id nunc quam. Fusce dictum eleifend dapibus. Sed sit amet fermentum augue. Etiam elementum scelerisque mauris, ac laoreet mauris hendrerit id. Maecenas vitae sapien aliquet elit adipiscing sagittis in in lectus. Ut lacus risus, ullamcorper id condimentum eu, sollicitudin nec purus. Proin quis quam nibh. Nulla sapien tellus, tempor at feugiat a, mattis ac nibh. Vivamus id sem tortor. Mauris tincidunt arcu quis velit tempus bibendum. Ut porttitor, sem vitae hendrerit congue, risus nisl rutrum tortor, at lacinia purus lorem vel lorem. Nulla adipiscing leo at enim posuere consequat. Curabitur felis metus, sagittis ac mattis pharetra, euismod at augue. Curabitur dolor neque, scelerisque a lacinia pretium, feugiat ac nisl.
+</p>
+<p>
+Donec a ligula id purus placerat aliquam quis at nisl. Ut fermentum, urna et volutpat fermentum, risus lacus laoreet augue, vel cursus dolor dui cursus justo. Aliquam ut elit est. Curabitur mattis, augue eu mattis pellentesque, purus risus ultrices erat, nec pharetra nulla erat nec quam. Morbi a metus ligula. Integer pellentesque ultrices semper. Suspendisse laoreet semper ligula non placerat. Suspendisse potenti. Sed vulputate hendrerit quam, eget sollicitudin libero accumsan posuere. Duis vitae mauris sed mi cursus pellentesque. Donec ultricies viverra diam, sit amet porta ante imperdiet sit amet. Cras vitae nunc nisl. Curabitur adipiscing auctor massa ac eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</p>
+<p>
+Aliquam nec lorem eu urna condimentum bibendum. Pellentesque id ullamcorper felis. Nunc a nisl nec lacus eleifend adipiscing quis nec augue. Aliquam sem sapien, vulputate pretium fringilla eget, rhoncus eget est. Curabitur a leo vitae odio sodales tristique. Sed imperdiet augue non metus ornare quis consectetur diam porttitor. Donec porta interdum enim a dignissim. In a nisl at eros cursus facilisis. Sed bibendum iaculis nibh et hendrerit. Nulla luctus bibendum dignissim. Nullam rhoncus rhoncus lacus, quis pellentesque quam condimentum in. Nunc vitae diam nibh, eget ullamcorper tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam suscipit pharetra lorem, vitae molestie eros luctus sollicitudin.
+</p>
+</div>
+</div>
+
+</body>
+</html>
+
