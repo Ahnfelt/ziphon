@@ -1,3 +1,5 @@
+typedef Type = Void;
+
 enum Pattern {
     PWildcard;
     PVariable(name: String);
@@ -9,6 +11,7 @@ enum Pattern {
 
 enum Expression {
     EImport(module: Array<String>, name: Null<String>, names: Array<{target: String, source: String}>, body: Expression);
+    EDefineVariant(name: String, export: Bool, constructors: Array<{name: String, parameters: Array<Type>}>, body: Expression);
     ELet(name: String, export: Bool, value: Expression, body: Expression);
     ERecursive(definitions: Array<{name: String, export: Bool, value: Expression}>, body: Expression);
     EVariable(name: String);

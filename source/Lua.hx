@@ -36,10 +36,35 @@ class Lua {
                     }
                 }
                 return result + "return " + translate(body) + " end) ())";
+            case EDefineVariant(name, export, constructors, body):
+                var result = "((function() ";
+                for(constructor in constructors) {
+                    result += "local V_" + constructor.name + " = ";
+                    for(i in 0...constructor.parameters.length) {
+                        result += "function(S_" + i + ") return ";
+                    }
+                    result += "{S_tag = \"" + escape(constructor.name) + "\", ";
+                    for(i in 0...constructor.parameters.length) {
+                        result += "S_" + i + " = S_" + i + ", ";
+                    }
+                    result += "}";
+                    for(i in 0...constructor.parameters.length) {
+                        result += " end";
+                    }
+                    result += ";\n";
+                }
+                if(export) {
+                    for(constructor in constructors) {
+                        result += "if S_module.F_" + constructor.name + " ~= nil then error(\"Cannot modify exported definition.\") end\n";
+                        result += "S_module.F_" + constructor.name + " = V_" + constructor.name + ";\n";
+                    }
+                }
+                return result + "return " + translate(body) + " end) ())";
             case ELet(name, export, value, body):
                 var result = "((function() ";
                 result += "local V_" + name + " = " + translate(value) + ";\n";
                 if(export) {
+                    result += "if S_module.F_" + name + " ~= nil then error(\"Cannot modify exported definition.\") end\n";
                     result += "S_module.F_" + name + " = V_" + name + ";\n";
                 }
                 return result + "return " + translate(body) + " end) ())";
@@ -50,7 +75,10 @@ class Lua {
                 }
                 for(definition in definitions) {
                     result += "V_" + definition.name + " = " + translate(definition.value) + ";\n";
+                }
+                for(definition in definitions) {
                     if(definition.export) {
+                        result += "if S_module.F_" + definition.name + " ~= nil then error(\"Cannot modify exported definition.\") end\n";
                         result += "S_module.F_" + definition.name + " = V_" + definition.name + ";\n";
                     }
                 }
@@ -101,8 +129,8 @@ class Lua {
                             result += "if " + conditions.join(" and ") + " then ";
                             result += extractors.join("") + "\n";
                             result += "return " + translate(choice.body) + ";\nelse";
-                            result += " error(\"None of the patterns matched.\") end";
                         }
+                        result += " error(\"None of the patterns matched.\") end";
                         for(i in 0...patterns) {
                             result += " end";
                         }
@@ -169,7 +197,7 @@ class Lua {
                     i += 1;
                 }
                 return {
-                    condition: getter + ".S_tag == \"" + tag + "\" and " + conditions.join(" and "),
+                    condition: getter + ".S_tag == \"" + escape(tag) + "\"" + (if(conditions.length != 0) " and " + conditions.join(" and ") else ""),
                     extractor: extractors.join(""),
                 };
         }
@@ -210,12 +238,22 @@ class Lua {
         /*var e3 = EImport(["standard"], "standard", null,
             EApply(EField(EVariable("standard"), "print"), EString("Hello, World!")));
         Lib.println(translateToLua(e3));*/
-        var lambda2 = [{
+        /*var lambda2 = [{
             patterns: [PObject([{name: "P", pattern: PVariable("p")}, {name: "Q", pattern: PVariable("q")}]), PString("foo")],
             body: EVariable("q")
         }];
         var e4 = ELet("f", false, EObject(null, lambda2, new Hash()), EVariable("f"));
-        Lib.println(translateToLua(e4));
+        Lib.println(translateToLua(e4));*/
+        var lambda3 = [{
+            patterns: [PVariant("Some", [PVariable("x")])],
+            body: EVariable("x")
+        },{
+            patterns: [PVariant("None", [])],
+            body: EFloat(0)
+        }];
+        var e5 = EDefineVariant("Option", true, [{name: "Some", parameters: [null]}, {name: "None", parameters: []}], 
+            EObject(null, lambda3, new Hash()));
+        Lib.println(translateToLua(e5));
     }
 }
 
