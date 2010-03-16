@@ -162,62 +162,70 @@ document.getElementById('query').focus();
 <div id="content">
 <div class="article">
 <div class="info">
-<h1>Branches</h1>
+<h1>Package contents</h1>
 <ul>
-<li><a href="">head</a></li>
-<li><a href="">release</a></li>
+<li><a href="/date">date</a></li>
+<ul>
+<li><a href="/date_buddhist">buddhist</a></li>
+<li><a href="/date_coptic">coptic</a></li>
+<li><a href="/date_tools">tools</a>
+<ul>
+<li><a href="/date_tools_utility">utility</a></li>
+<li><a href="/date_tools_niftything">niftything</a></li>
 </ul>
-<a href="">Previous versions</a>
+</li>
+<li><a href="/date_ethiopic">ethiopic</a></li>
+<li><a href="/date_gregorian">gregorian</a></li>
+<li><a href="/date_islamic">islamic</a></li>
+<li>iso8601</li>
+<li><a href="/date_julian">julian</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<a href="/?view=packages">All packages</a>
 </div>
-<h1>Module: date</h1>
+<h1>Package: <a href="/date/package.json">date</a></h1>
 <ul>
 <li>
-Authors: John Lillivan
+Organizations: <a href="">The Ziphon Foundation</a>
 </li>
 <li>
-Maintainers: John Lillivan
+Contributors: <a href="">John Lillivan</a>
 </li>
 <li>
-License: Public Domain
+License: <a href="">Public Domain</a>
 </li>
 <li>
-Branch: release
+Homepage: <a href="http://github.com/ziphon/date">http://github.com/ziphon/date</a>
 </li>
 <li>
-Version: 2.03.01
+Version: 2.03.001 <a href="/date/versions">[all versions]</a> <a href="/date?version=snapshot">[snapshot version]</a>
 </li>
 <li>
 Updated: 2010-03-05
 </li>
 </ul>
 <p>
-This module is used for representing date/time and for performing arithmetic on them.
+This package is used for date/time related tasks.
+</p>
+<h2>Module: <a href="/date_iso8601/source.zi">date_iso8601</a></h2>
+<p>
+This module implements ISO 8601 date/time. It is the default calendar for dates and times.
 </p>
 <p>
 Example code:
 </p>
 <pre>
-@date (parseDate, duration)
-d1 := parseDate("2010-01-01")
-d2 := parseDate("2010-03-05")
-print("Time between d1 and d2: " ++ duration(d1, d2))
+@date (duration)
+@date_iso8601
+d1 := iso8601_parse("2010-01-01")
+d2 := iso8601_parse("2010-03-05")
+print("Time between d1 and d2: "..duration(d1, d2))
 </pre>
 </div>
 
 <div class="article">
-<div class="info">
-<h1>Submodules</h1>
-<ul>
-<li><a href="">buddhist</a></li>
-<li><a href="">coptic</a></li>
-<li><a href="">ethiopic</a></li>
-<li><a href="">gregorian</a></li>
-<li><a href="">islamic</a></li>
-<li><a href="">iso8601</a></li>
-<li><a href="">julian</a></li>
-</ul>
-Top level module
-</div>
 <h1>Exported symbols</h1>
 <h2>Types</h2>
 <p>
@@ -226,13 +234,13 @@ This module exports no types.
 <h2>Values</h2>
 <ul class="symbol-list">
 <li>
-<code><a href="" class="symbol">parseDate</a> :: {|String| Date}</code>
+<code><a href="/date_iso8601/source.zi#32" class="symbol">parseDate</a> :: {|String| Date}</code>
 <p>
 Parses an ISO 8601 date. If the argument is not such a date, it throws a FormatException.
 </p>
 </li>
 <li>
-<code><a href="" class="symbol">interval</a> :: {|Date, Date| Interval}</code>
+<code><a href="/date_iso8601/source.zi#38" class="symbol">interval</a> :: {|Date, Date| Interval}</code>
 <p>
 Returns the interval between the two given dates.
 </p>
