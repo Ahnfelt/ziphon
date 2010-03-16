@@ -186,7 +186,7 @@ That was straightforward. Let's do something more involved:
 # Printing each line of a file that starts with ">"
 @io (file)
 file('test.txt').Lines.each {|line|
-    line.startsWith('>').then {
+    when(line.startsWith('>')) {
         print(line)
     }
 }
