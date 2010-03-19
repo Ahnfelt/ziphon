@@ -11,20 +11,20 @@
 # Efficient, since multiple reads can be performed concurrently.
 # The focus is on data, not on code.
 
-data := shared(x: 0)
-data2 := sharedChild(data, (y: 0))
+data := shared(X: 0)
+data2 := sharedChild(data, (Y: 0))
 
 data.read {|d|
-    print(d.x())
+    print(d.X)
 }
 
 data.readWrite {|d|
-    d.x += 1
+    d.X += 1
 }
 
 data.read {|d|
     data2.readWrite {|d2|
-        d2.y += d.x()
+        d2.Y += d.X
     }
 }
 
