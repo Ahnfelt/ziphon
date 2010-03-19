@@ -1,0 +1,41 @@
+Example package description (package.json):
+
+    {
+        "name": "date",
+        "organizations": [
+            {"name": "The Ziphon Foundation", "url": "http://ziphon.net"}
+        ],
+        "contributors": [
+            {"name": "John Lillivan", "email": "john@lillivan.com"}
+        ],
+        "licenses": ["publicdomain"],
+        "homepage": "http://github.com/ziphon/date",
+        "description": "This package is used for date/time related tasks."
+    }
+
+There must be a folder called "main" containing the source code for the modules.
+Exstensions may name more folders (ie. "test" for unit testing).
+
+The name must be specified and be a string. This is the name of the package
+and of the top level module. It must follow the module naming conventions.
+
+If organizations is empty or not specified, the field should not be shown.
+
+If contributers are empty, the field should not be shown. 
+If it's not specified, the contributors should be extracted from the version control.
+The email is optional.
+
+If license is unknown, not specified or empty, a warning should appear that the terms are unknown.
+
+If the homepage is not specified, it should not be shown.
+
+If the description is not specified, it should not be shown.
+
+The version is specified by tagging in the version control. For example, the tag v2.01.003 marks version 2.1.3.
+The format is a "v" followed by exactly three integers separated by dots, all of which may be zero padded.
+The version is treated as a triple of these three integers. For example, a tag v1.0.2 (1, 0, 2) marks 
+lower version number than the tag v1.0.10 (1, 0, 10).
+A pseudo-version called "snapshot" points to the head of the master branch of the version control.
+
+You add a new package by adding a push callback on the version control host.
+

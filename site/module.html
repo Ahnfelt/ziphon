@@ -1,0 +1,266 @@
+<html>
+<title>Ziphon</title>
+<style>
+body {
+    background:url('tile.png');
+    margin:0;
+    padding-bottom:50px;
+}
+#top {
+    background:#005080;
+    border-bottom:2px solid #006bb7;
+    height:32px;
+}
+#menu a, #branding a {
+    color:#ffffff;
+    text-decoration:none;
+}
+#menu a:hover, #branding a:hover {
+    color:#a0cbff;
+}
+#branding {
+    position:absolute;
+    left:0;
+    top:0;
+    height:32px;
+    vertical-align:middle;
+}
+#logo {
+    padding-left:20px;
+    font-weight:bold;
+    font-family:courier;
+    font-size:25px;
+    color:#ffffff;
+}
+#phrase {
+    padding-left:30px;
+    font-family:'monospace', courier;
+    font-size:15px;
+    color:#ffffff;
+}
+#menu {
+    position:absolute;
+    right:0;
+    top:0;
+    height:32px;
+    vertical-align:middle;
+}
+.item {
+    padding-right:20px;
+    font-weight:bold;
+    font-family:'trebuchet ms', sans-serif;
+    font-size:16px;
+    color:#ffffff;
+    vertical-align:bottom;
+}
+#search {
+    margin:0;
+    padding:0;
+    display:inline;
+}
+#search input {
+    border:1px solid #00a0e0;
+    background:#0080c0;
+    font-family:'monospace', courier;
+    font-size:12px;
+    width:200px;
+    margin-top:6px;
+    margin-right:5px;
+    height:20px;
+    color:#ffffff;
+}
+#search input:hover {
+    background:#008aca;
+    border:1px solid #c0e0e0;
+}
+#search input:focus {
+    background:#0090d0;
+    border:1px solid #c0e0e0;
+    outline:none;
+}
+#content {
+    margin-left:10%;
+    margin-right:10%;
+    color:#ffffff;
+    font-family:'DejaVu Sans',sans-serif;
+}
+#content a {
+    color:#a0cbff;
+    text-decoration:none;
+}
+#content a:hover {
+    color:#ffffff;
+}
+#content h1 {
+    margin:0;
+    font-size:20px;
+}
+#content h2 {
+    margin:0;
+    margin-top:25px;
+    font-size:18px;
+}
+#content p {
+    margin:0;
+    margin-top:20px;
+    margin-right:20%;
+}
+#content pre {
+    background:#0060a7;
+    border:2px solid #006bb7;
+    font-family:'monospace', courier;
+    font-size:15px;
+    padding:10px;
+    margin-left:20px;
+    margin-right:50px;
+}
+.article {
+    background:#005080;
+    border:2px solid #006bb7;
+    margin-top:30px;
+    padding:20px;
+    padding-left:20px;
+    padding-right:20px;
+}
+.info {
+    float:right;
+    clear:right;
+    background:url('tile.png');
+    border:2px solid #006bb7;
+    margin-left:15px;
+    margin-bottom:15px;
+    padding:10px;
+}
+.symbol-list li {
+    margin-top:30px;
+}
+.symbol-list .symbol {
+    font-weight:bold;
+    font-size:large;
+}
+</style>
+<body>
+
+<div id="top">
+</div>
+<div id="branding">
+<span id="logo" title="Visit the front page"><a href="http://ziphon.net">Ziphon</a></span><!--
+--><span id="phrase">under development</span>
+</div>
+<div id="menu">
+<span class="item" title="Download Ziphon for your system"><a href="http://downloads.ziphon.net">Downloads</a></span><!--
+--><span class="item" title="Get to know Ziphon and its libraries"><a href="http://documentation.ziphon.net">Documentation</a></span><!--
+--><span class="item" title="Participate in the discussion"><a href="http://community.ziphon.net">Community</a></span><!--
+--><form id="search"><!--
+--><input id="query" name="query" type="text" spellcheck="false" alt="search" title="Example: To search for a function that takes a String and returns an Int, type: {|String| Int}"><!--
+--></form>
+</div>
+<script type="text/javascript"><!--
+document.getElementById('query').focus();
+//--></script>
+
+<div id="content">
+<div class="article">
+<div class="info">
+<h1>Package contents</h1>
+<ul>
+<li><a href="/date">date</a></li>
+<ul>
+<li><a href="/date_buddhist">buddhist</a></li>
+<li><a href="/date_coptic">coptic</a></li>
+<li><a href="/date_tools">tools</a>
+<ul>
+<li><a href="/date_tools_utility">utility</a></li>
+<li><a href="/date_tools_niftything">niftything</a></li>
+</ul>
+</li>
+<li><a href="/date_ethiopic">ethiopic</a></li>
+<li><a href="/date_gregorian">gregorian</a></li>
+<li><a href="/date_islamic">islamic</a></li>
+<li>iso8601</li>
+<li><a href="/date_julian">julian</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<a href="/?view=packages">All packages</a>
+</div>
+<h1>Package: <a href="/date/package.json">date</a></h1>
+<ul>
+<li>
+Organizations: <a href="">The Ziphon Foundation</a>
+</li>
+<li>
+Contributors: <a href="">John Lillivan</a>
+</li>
+<li>
+License: <a href="">Public Domain</a>
+</li>
+<li>
+Homepage: <a href="http://github.com/ziphon/date">http://github.com/ziphon/date</a>
+</li>
+<li>
+Version: 2.03.001 <a href="/date/versions">[all versions]</a> <a href="/date?version=snapshot">[snapshot version]</a>
+</li>
+<li>
+Updated: 2010-03-05
+</li>
+</ul>
+<p>
+This package is used for date/time related tasks.
+</p>
+<h2>Module: <a href="/date_iso8601/source.zi">date_iso8601</a></h2>
+<p>
+This module implements ISO 8601 date/time. It is the default calendar for dates and times.
+</p>
+<p>
+Example code:
+</p>
+<pre>
+@date (duration)
+@date_iso8601
+d1 := iso8601_parse("2010-01-01")
+d2 := iso8601_parse("2010-03-05")
+print("Time between d1 and d2: "..duration(d1, d2))
+</pre>
+</div>
+
+<div class="article">
+<h1>Exported symbols</h1>
+<h2>Types</h2>
+<p>
+This module exports no types.
+</p>
+<h2>Values</h2>
+<ul class="symbol-list">
+<li>
+<code><a href="/date_iso8601/source.zi#32" class="symbol">parseDate</a> :: {|String| Date}</code>
+<p>
+Parses an ISO 8601 date. If the argument is not such a date, it throws a FormatException.
+</p>
+</li>
+<li>
+<code><a href="/date_iso8601/source.zi#38" class="symbol">interval</a> :: {|Date, Date| Interval}</code>
+<p>
+Returns the interval between the two given dates.
+</p>
+</li>
+</ul>
+</div>
+
+<div class="article">
+<h1>Dependencies</h1>
+<h2>What does this module require?</h2>
+<p>
+This module is self contained.
+</p>
+<h2>What modules depend on this one?</h2>
+<p>
+This module is not used by any other known modules.
+</p>
+</div>
+</div>
+
+</body>
+</html>
+
